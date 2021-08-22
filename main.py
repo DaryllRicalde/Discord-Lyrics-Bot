@@ -1,9 +1,12 @@
 import discord
 import config 
 import requests
+from lyricsgenius import Genius
 
 client = discord.Client()
 token = config.token
+genius_token = config.genius_token
+genius_client = Genius(genius_token)
 
 # Research point : await and async functions
 # Idea for bot to handle multiple commands: Switch case
@@ -19,6 +22,10 @@ def getSong(query):
 
     for word in array: 
         print(word)
+
+def getSingleSong():
+    artist = genius_client.search_artist("Andy Shauf", max_songs=3,sort="title")
+    print(artist.songs)
             
 
 # Handle messages
@@ -35,5 +42,9 @@ async def on_message(message):
         getSong(message.content)            # Get the actual message that was sent
         await message.channel.send('Pong!')
     
+    elif message.content.startswith('!test'):
+        getSingleSong()
+        await message.channel.send('Sent test to terminal')
+
         
 client.run(token)
