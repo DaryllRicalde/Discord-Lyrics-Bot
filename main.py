@@ -46,7 +46,15 @@ async def on_message(message):
     
     elif message.content.startswith('!lyrics'):
         song_name = split(message.content)
-        song = genius_client.search_song(song_name[1])
+
+        full_song_name = ""
+
+        for i in range(1, len(song_name)):
+             full_song_name += song_name[i] + " "
+
+        song = genius_client.search_song(full_song_name)
         await message.channel.send(song.lyrics)
+
+    
         
 client.run(token)
