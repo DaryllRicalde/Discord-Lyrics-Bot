@@ -11,7 +11,8 @@ genius_client = Genius(genius_token)
 # Research point : await and async functions
 # Idea for bot to handle multiple commands: Switch case
 
-
+ 
+# on ready ung ready prompt
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -41,6 +42,9 @@ async def on_message(message):
     elif message.content.startswith('!ping'):
         getSong(message.content)            # Get the actual message that was sent
         await message.channel.send('Pong!')
+
+    elif message.content.startswith('!bitch'):
+        await message.channel.send('Lasagna')
     
     elif message.content.startswith('!test'):
         getSingleSong()
