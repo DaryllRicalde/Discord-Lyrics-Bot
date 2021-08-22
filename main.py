@@ -23,6 +23,14 @@ def split(query): # Split the query into strings
 
     return array
 
+def getSong(song_name):
+    full_song_name = ""
+
+    for i in range(1, len(song_name)):
+        full_song_name += song_name[i] + " "
+    
+    return full_song_name
+
 # Handle messages
 @client.event 
 async def on_message(message):
@@ -39,21 +47,12 @@ async def on_message(message):
 
     elif message.content.startswith('!bitch'):
         await message.channel.send('Lasagna')
-    
-    elif message.content.startswith('!test'):
-        getSingleSong()
-        await message.channel.send('Sent test to terminal')
-    
+
     elif message.content.startswith('!lyrics'):
-        song_name = split(message.content)
 
-        full_song_name = ""
-
-        for i in range(1, len(song_name)):
-             full_song_name += song_name[i] + " "
+        song_name = split(message.content)      # Split strings
+        song = getSong(song_name)               # Get the best song by match
 
         await message.channel.send(song.lyrics)
 
-    
-        
 client.run(token)
