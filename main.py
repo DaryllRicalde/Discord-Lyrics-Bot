@@ -17,17 +17,11 @@ genius_client = Genius(genius_token)
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
 
-def getSong(query):
+def split(query): # Split the query into strings
     print("THIS WAS THE MESSAGE THAT WAS SENT\n")
     array = query.split() # Split the query into a list
 
-    for word in array: 
-        print(word)
-
-def getSingleSong():
-    artist = genius_client.search_artist("Andy Shauf", max_songs=3,sort="title")
-    print(artist.songs)
-            
+    return array
 
 # Handle messages
 @client.event 
@@ -49,6 +43,10 @@ async def on_message(message):
     elif message.content.startswith('!test'):
         getSingleSong()
         await message.channel.send('Sent test to terminal')
-
+    
+    elif message.content.startswith('!lyrics'):
+        song_name = split(message.content)
+        song = genius_client.search_song(song_name[1])
+        await message.channel.send(song.lyrics)
         
 client.run(token)
