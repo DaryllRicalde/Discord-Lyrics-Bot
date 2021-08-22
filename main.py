@@ -45,7 +45,7 @@ async def on_message(message):
         await message.channel.send('Sent test to terminal')
     
     elif message.content.startswith('!lyrics'):
-        song_name = split(message.content)
+        song_name = split(message.content) 
         song = genius_client.search_song(song_name[1])
         await message.channel.send(song.lyrics)
         
