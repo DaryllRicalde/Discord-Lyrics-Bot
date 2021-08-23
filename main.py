@@ -21,15 +21,27 @@ def split(query): # Split the query into strings
     print("THIS WAS THE MESSAGE THAT WAS SENT\n")
     array = query.split() # Split the query into a list
 
-    return array
+    return array 
 
-def getSong(song_name):
+def getSong(song_name):     # Return the Song object
     full_song_name = ""
 
     for i in range(1, len(song_name)):
         full_song_name += song_name[i] + " "
-    
-    return full_song_name
+
+    songObj = genius_client.search_song(full_song_name)
+
+    return songObj
+
+def getArtist(artist_name):     # Return the Artist object
+    full_artist_name = ""
+
+    for i in range(1, len(artist_name)):
+        full_artist_name += artist_name[i] + " "
+
+    artistObj = genius_client.search_artist(full_artist_name)
+
+    return artistObj
 
 # Handle messages
 @client.event 
@@ -42,7 +54,6 @@ async def on_message(message):
         await message.channel.send('Hello! ' + sender)
 
     elif message.content.startswith('!ping'):
-        getSong(message.content)            # Get the actual message that was sent
         await message.channel.send('Pong!')
 
     elif message.content.startswith('!bitch'):
@@ -50,9 +61,21 @@ async def on_message(message):
 
     elif message.content.startswith('!lyrics'):
 
-        song_name = split(message.content)      # Split strings
-        song = getSong(song_name)               # Get the best song by match
+        song_name = split(message.content)
+        songObject = getSong(song_name)
+        
+        if(len(songObject.lyrics) >= 2000):
+            await message.channel.send("Oops! That lyrics of this song exceeds Discord's character limit :( Here's the link to the song lyrics courtesy of Genius " + songObject.url)
 
-        await message.channel.send(song.lyrics)
+        await message.channel.send(songObject.lyrics)
 
+    elif message.content.startswith('!artist'):     # Return top 5 songs of this artist
+
+        artist_name = split(message.content)
+        artist_object = getArtist(artist_name)
+        top_songs = artist_object.songs                    #Returns a list
+
+        for i in range (1,5):
+            await message.channel.send(top_songs[i])
+        
 client.run(token)
