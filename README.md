@@ -12,4 +12,5 @@ A Discord Bot written in Python that provides karaoke-esque functionalities like
 - [ ] Allow bot to show commands available
 - [ ] Add functionality for bot to attach itself to a channel
 - [ ] Allow music playing functionality
+- [ ] Allow functionality to set nicknames on member join
 - [ ] Deploy
