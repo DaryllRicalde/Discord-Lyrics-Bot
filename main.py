@@ -2,11 +2,19 @@ import discord
 import config 
 import requests
 from lyricsgenius import Genius
+from discord.ext import commands
 
-client = discord.Client()
+intents = discord.Intents.default()
+intents.members = True
+
+intents = discord.Intents.default()
+intents.members = True
+client = commands.Bot(command_prefix=',', intents=intents)
 token = config.token
 genius_token = config.genius_token
 genius_client = Genius(genius_token)
+guild_id = 876341586781417482       # Server ID
+general_channel_id = 876341586781417485     # #general text channel ID
 
 # Research point : await and async functions
 # Idea for bot to handle multiple commands: Switch case
@@ -16,6 +24,16 @@ genius_client = Genius(genius_token)
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+
+@client.event
+async def on_member_join(member):
+    
+    # this_guild = client.getGuild(guild_id)   # Returns a guild with the given ID i.e. this server
+    
+    channel = client.get_channel(general_channel_id)
+    print("on_member_join activated")
+
+    await channel.send("ANG LAKI! " + member.display_name)
 
 def split(query): # Split the query into strings
     print("THIS WAS THE MESSAGE THAT WAS SENT\n")
